@@ -11,17 +11,30 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var label : SKLabelNode?
+    private var twitter : SKSpriteNode?
+    private var background : SKSpriteNode?
     private var spinnyNode : SKShapeNode?
     
     override func didMove(to view: SKView) {
         
+        twitter = self.childNode(withName: "//icon") as? SKSpriteNode
+        background = self.childNode(withName: "//background") as? SKSpriteNode
+        background?.scene?.scaleMode = .aspectFill
+        
+        twitter?.physicsBody?.isDynamic
+       
+//        ​SKAction *action1 = [SKAction moveToY:30.0 sec:5.0];
+
+//        twitter.physicsBody = SKPhysicsBody(texture: spaceShipTexture,
+//        size: CGSize(width: circularSpaceShip.size.width,
+//                     height: circularSpaceShip.size.height))
+
         // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
+//        if let label = self.label {
+//            label.alpha = 0.0
+//            label.run(SKAction.fadeIn(withDuration: 2.0))
+//        }
         
         // Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
@@ -63,9 +76,23 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+//        if let label = self.label {
+//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
+//        }
+        
+//        let touch:UITouch = touches.anyObject() as! UITouch
+//        let positionInScene = touch.location(in: self)
+//        let touchedNode = twitter(positionInScene)
+//
+//        if let name = touchedNode.name
+//        {
+//            if name == "pineapple"
+//            {
+//                print("Touched")
+//            }
+//        }
+        
+        twitter?.run(SKAction.moveTo(y: twitter!.position.y + 20, duration: 0.5))
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
