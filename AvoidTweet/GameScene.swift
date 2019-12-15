@@ -17,12 +17,40 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        twitter = self.childNode(withName: "//icon") as? SKSpriteNode
-        background = self.childNode(withName: "//background") as? SKSpriteNode
-        background?.scene?.scaleMode = .aspectFill
+        background = SKSpriteNode(imageNamed: "background")
+        guard let background = background else { return }
+        background.size = size
+        background.position = CGPoint(x: 0, y: 0)
+        background.scene?.scaleMode = .aspectFit
+        addChild(background)
         
-        twitter?.physicsBody?.isDynamic
-       
+        let f1 = SKTexture.init(imageNamed: "twitterbird1")
+        let f2 = SKTexture.init(imageNamed: "twitterbird2")
+        let frames: [SKTexture] = [f1, f2]
+
+        twitter = SKSpriteNode(imageNamed: "twitterbird1")
+        guard let twitter = twitter else { return }
+        twitter.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
+
+        let animation = SKAction.animate(with: frames, timePerFrame: 0.1)
+        twitter.run(SKAction.repeatForever(animation))
+        addChild(twitter)
+
+//        let img = UIImage.gif(name: "twitterbird")
+
+//        twitter = self.childNode(withName: "//twitterbird") as? SKSpriteNode
+//        twitter = self.childNode(withName: "//icon") as? SKSpriteNode
+//        background?.size = view.frame.size
+//        background?.size = UIScreen.main.bounds.size
+//        background?.size = UIScreen.main.nativeBounds.size
+//        background?.scale(to: UIScreen.main.nativeBounds.size)
+        
+//        background?.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        background?.position = CGPoint(x: size.width/2, y: size.height/2)
+//        background?.anchorPoint = CGPoint(x: size.width/2, y: size.height/2)
+
+//        twitter?.physicsBody?.isDynamic
+
 //        ​SKAction *action1 = [SKAction moveToY:30.0 sec:5.0];
 
 //        twitter.physicsBody = SKPhysicsBody(texture: spaceShipTexture,

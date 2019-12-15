@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2FB8B6444E5EA091BFAC67B7 /* Pods_AvoidTweet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55451C751AF45C99C642108 /* Pods_AvoidTweet.framework */; };
 		474F7C7423A241B700411100 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474F7C7323A241B700411100 /* AppDelegate.swift */; };
 		474F7C7623A241B700411100 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 474F7C7523A241B700411100 /* GameScene.sks */; };
 		474F7C7823A241B700411100 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 474F7C7723A241B700411100 /* Actions.sks */; };
@@ -28,6 +29,9 @@
 		474F7C8023A241B900411100 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		474F7C8323A241B900411100 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		474F7C8523A241B900411100 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4240CD5D3782A3400F337AE /* Pods-AvoidTweet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvoidTweet.release.xcconfig"; path = "Target Support Files/Pods-AvoidTweet/Pods-AvoidTweet.release.xcconfig"; sourceTree = "<group>"; };
+		E55451C751AF45C99C642108 /* Pods_AvoidTweet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AvoidTweet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA1B12153901D00909D8CF49 /* Pods-AvoidTweet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AvoidTweet.debug.xcconfig"; path = "Target Support Files/Pods-AvoidTweet/Pods-AvoidTweet.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FB8B6444E5EA091BFAC67B7 /* Pods_AvoidTweet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +51,8 @@
 			children = (
 				474F7C7223A241B700411100 /* AvoidTweet */,
 				474F7C7123A241B700411100 /* Products */,
+				E4F6D924B7313CB750ECBD11 /* Pods */,
+				9279BC5411B6266BCF1D51B5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +80,24 @@
 			path = AvoidTweet;
 			sourceTree = "<group>";
 		};
+		9279BC5411B6266BCF1D51B5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E55451C751AF45C99C642108 /* Pods_AvoidTweet.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4F6D924B7313CB750ECBD11 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FA1B12153901D00909D8CF49 /* Pods-AvoidTweet.debug.xcconfig */,
+				A4240CD5D3782A3400F337AE /* Pods-AvoidTweet.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,9 +105,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 474F7C8823A241B900411100 /* Build configuration list for PBXNativeTarget "AvoidTweet" */;
 			buildPhases = (
+				2C755048E2645D4B793E3C66 /* [CP] Check Pods Manifest.lock */,
 				474F7C6C23A241B700411100 /* Sources */,
 				474F7C6D23A241B700411100 /* Frameworks */,
 				474F7C6E23A241B700411100 /* Resources */,
+				953A4E6E7B91F0CC9D6E8820 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -140,6 +167,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2C755048E2645D4B793E3C66 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AvoidTweet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		953A4E6E7B91F0CC9D6E8820 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AvoidTweet/Pods-AvoidTweet-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AvoidTweet/Pods-AvoidTweet-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AvoidTweet/Pods-AvoidTweet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		474F7C6C23A241B700411100 /* Sources */ = {
@@ -290,6 +359,7 @@
 		};
 		474F7C8923A241B900411100 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FA1B12153901D00909D8CF49 /* Pods-AvoidTweet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -307,6 +377,7 @@
 		};
 		474F7C8A23A241B900411100 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4240CD5D3782A3400F337AE /* Pods-AvoidTweet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
