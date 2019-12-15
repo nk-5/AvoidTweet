@@ -17,12 +17,39 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        physicsWorld.gravity =  CGVector(dx: 0, dy: -1)
+        
         background = SKSpriteNode(imageNamed: "background")
         guard let background = background else { return }
         background.size = size
         background.position = CGPoint(x: 0, y: 0)
         background.scene?.scaleMode = .aspectFit
+        
+        let backgroundMore = SKSpriteNode(imageNamed: "background")
+        backgroundMore.size = size
+        backgroundMore.position = CGPoint(x: size.width, y: 0)
+        backgroundMore.scene?.scaleMode = .aspectFit
+        
+        background.run(
+            SKAction.repeatForever(
+                SKAction.sequence([
+                    SKAction.moveTo(x: -size.width, duration: 3.0),
+                    SKAction.moveTo(x: 0, duration: 0),
+                ])
+            )
+        )
+        
+        backgroundMore.run(
+            SKAction.repeatForever(
+                SKAction.sequence([
+                    SKAction.moveTo(x: 0, duration: 3.0),
+                    SKAction.moveTo(x: size.width, duration: 0),
+                ])
+            )
+        )
+        
         addChild(background)
+        addChild(backgroundMore)
         
         let f1 = SKTexture.init(imageNamed: "twitterbird1")
         let f2 = SKTexture.init(imageNamed: "twitterbird2")
@@ -30,40 +57,18 @@ class GameScene: SKScene {
 
         twitter = SKSpriteNode(imageNamed: "twitterbird1")
         guard let twitter = twitter else { return }
+        
+        twitter.zPosition = 1
         twitter.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
 
         let animation = SKAction.animate(with: frames, timePerFrame: 0.1)
         twitter.run(SKAction.repeatForever(animation))
+        
+        twitter.physicsBody?.isDynamic = true
+        twitter.physicsBody = SKPhysicsBody(texture: twitter.texture!, size: twitter.size)
         addChild(twitter)
 
-//        let img = UIImage.gif(name: "twitterbird")
 
-//        twitter = self.childNode(withName: "//twitterbird") as? SKSpriteNode
-//        twitter = self.childNode(withName: "//icon") as? SKSpriteNode
-//        background?.size = view.frame.size
-//        background?.size = UIScreen.main.bounds.size
-//        background?.size = UIScreen.main.nativeBounds.size
-//        background?.scale(to: UIScreen.main.nativeBounds.size)
-        
-//        background?.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-//        background?.position = CGPoint(x: size.width/2, y: size.height/2)
-//        background?.anchorPoint = CGPoint(x: size.width/2, y: size.height/2)
-
-//        twitter?.physicsBody?.isDynamic
-
-//        ​SKAction *action1 = [SKAction moveToY:30.0 sec:5.0];
-
-//        twitter.physicsBody = SKPhysicsBody(texture: spaceShipTexture,
-//        size: CGSize(width: circularSpaceShip.size.width,
-//                     height: circularSpaceShip.size.height))
-
-        // Get label node from scene and store it for use later
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
-        
         // Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
         self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
@@ -120,7 +125,7 @@ class GameScene: SKScene {
 //            }
 //        }
         
-        twitter?.run(SKAction.moveTo(y: twitter!.position.y + 20, duration: 0.5))
+        twitter?.run(SKAction.moveTo(y: twitter!.position.y + 100, duration: 0.5))
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
