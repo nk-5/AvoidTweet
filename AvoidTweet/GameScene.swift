@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var twitter : SKSpriteNode?
     private var background : SKSpriteNode?
@@ -19,65 +19,36 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         
         physicsWorld.gravity =  CGVector(dx: 0, dy: -0.5)
+        physicsWorld.contactDelegate = self
         physicsBody?.isDynamic = false
         physicsBody?.allowsRotation = false
-//        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        physicsBody?.affectedByGravity = false
         
+
         drawBackground()
         drawTwitter()
         drawObstacle()
-
-        let wall = CGRect(x: frame.origin.x,
-                          y: frame.origin.y + twitter!.frame.height/2,
-                          width: frame.width,
-                          height: frame.height)
-        
-        physicsBody = SKPhysicsBody(edgeLoopFrom: wall)
     }
     
     
     func touchDown(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.green
-//            self.addChild(n)
-//        }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.blue
-//            self.addChild(n)
-//        }
     }
     
     func touchUp(atPoint pos : CGPoint) {
-//        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-//            n.position = pos
-//            n.strokeColor = SKColor.red
-//            self.addChild(n)
-//        }
+    }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        print(contact)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        if let label = self.label {
-//            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-//        }
-        
-//        let touch:UITouch = touches.anyObject() as! UITouch
-//        let positionInScene = touch.location(in: self)
-//        let touchedNode = twitter(positionInScene)
-//
-//        if let name = touchedNode.name
-//        {
-//            if name == "pineapple"
-//            {
-//                print("Touched")
-//            }
-//        }
-        
-        twitter?.run(SKAction.moveTo(y: twitter!.position.y + 150, duration: 0.5))
+        let diff = frame.origin.y * -1 - twitter!.position.y
+        let jump = diff < 150 ? diff : 150
+        twitter?.run(SKAction.moveTo(y: twitter!.position.y + jump, duration: 0.5))
         
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
@@ -147,13 +118,45 @@ class GameScene: SKScene {
         let animation = SKAction.animate(with: frames, timePerFrame: 0.1)
         twitter.run(SKAction.repeatForever(animation))
         
-        twitter.physicsBody?.isDynamic = true
+        twitter.physicsBody = SKPhysicsBody(texture: twitter.texture!, size: twitter.frame.size)
         twitter.physicsBody?.allowsRotation = false
-        twitter.physicsBody = SKPhysicsBody(rectangleOf: twitter.frame.size)
+        twitter.physicsBody?.categoryBitMask = 1
+        twitter.physicsBody?.collisionBitMask = 1
+        twitter.physicsBody?.contactTestBitMask = 1
         addChild(twitter)
     }
     
     private func drawObstacle() {
-       obstacle = SKSpriteNode(texture: SKTexture, color: <#T##UIColor#>, size: <#T##CGSize#>)
+        let square = SKLabelNode(text: "ツイート！！！")
+        square.position = CGPoint(x: size.width, y: frame.midY)
+        square.fontColor = .red
+        square.zPosition = 1
+        square.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: square.frame.width, height: square.frame.height))
+        square.physicsBody?.isDynamic = false
+        square.physicsBody?.affectedByGravity = false
+        square.physicsBody?.categoryBitMask = 1
+        square.physicsBody?.collisionBitMask = 1
+
+        square.run(
+            SKAction.repeatForever(
+                SKAction.sequence([
+                    SKAction.moveTo(x: -size.width, duration: 4.5),
+                    SKAction.run({
+                        square.position = CGPoint(x: self.size.width,
+                                                  y: CGFloat.random(in: self.frame.origin.y + square.frame.height..<(self.frame.origin.y * -1) - square.frame.height))
+                    })
+                ])
+            )
+        )
+
+        self.addChild(square)
     }
 }
+
+// ハマった点
+// 1. 回転する -> isDynamicの設定, physicBody の設定順序
+// 2. 画面から出る -> jumpの設定
+// 3. 衝突判定 -> 下記の設定
+//twitter.physicsBody?.categoryBitMask = 1
+//twitter.physicsBody?.collisionBitMask = 1
+//twitter.physicsBody?.contactTestBitMask = 1
