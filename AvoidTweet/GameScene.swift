@@ -13,8 +13,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var twitter : SKSpriteNode?
     private var background : SKSpriteNode?
-    private var spinnyNode : SKShapeNode?
-    private var obstacle : SKSpriteNode?
+    private var backgroundMore : SKSpriteNode?
+    private var tweet1 : SKLabelNode?
+    private var tweet2 : SKLabelNode?
+    private var tweet3 : SKLabelNode?
+    
+    private var terminated: Bool = false
     
     override func didMove(to view: SKView) {
         
@@ -25,10 +29,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsBody?.affectedByGravity = false
         
-
         drawBackground()
         drawTwitter()
-        drawObstacle()
+        
+        tweet1 = SKLabelNode(text: "ツイート！！！")
+        tweet2 = SKLabelNode(text: "ツイート！！！")
+        tweet3 = SKLabelNode(text: "ツイート！！！")
+        drawObstacle(tweet: tweet1!)
+        drawObstacle(tweet: tweet2!)
+        drawObstacle(tweet: tweet3!)
     }
     
     
@@ -42,10 +51,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        print(contact)
+        background?.removeAllActions()
+        backgroundMore?.removeAllActions()
+        twitter?.removeAllActions()
+        tweet1?.removeAllActions()
+        tweet2?.removeAllActions()
+        tweet3?.removeAllActions()
+        terminated = true
+        drawTerminate()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if terminated {
+           return
+        }
         let diff = frame.origin.y * -1 - twitter!.position.y
         let jump = diff < 150 ? diff : 150
         twitter?.run(SKAction.moveTo(y: twitter!.position.y + jump, duration: 0.5))
@@ -77,7 +96,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.position = CGPoint(x: 0, y: 0)
         background.scene?.scaleMode = .aspectFit
         
-        let backgroundMore = SKSpriteNode(imageNamed: "background")
+        backgroundMore = SKSpriteNode(imageNamed: "background")
+        guard let backgroundMore = backgroundMore else { return }
         backgroundMore.size = size
         backgroundMore.position = CGPoint(x: size.width, y: 0)
         backgroundMore.scene?.scaleMode = .aspectFit
@@ -126,30 +146,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(twitter)
     }
     
-    private func drawObstacle() {
-        let square = SKLabelNode(text: "ツイート！！！")
-        square.position = CGPoint(x: size.width, y: frame.midY)
-        square.fontColor = .red
-        square.zPosition = 1
-        square.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: square.frame.width, height: square.frame.height))
-        square.physicsBody?.isDynamic = false
-        square.physicsBody?.affectedByGravity = false
-        square.physicsBody?.categoryBitMask = 1
-        square.physicsBody?.collisionBitMask = 1
+    private func drawObstacle(tweet: SKLabelNode) {
+        tweet.position = CGPoint(x: size.width, y: CGFloat.random(in: self.frame.origin.y + tweet.frame.height..<(self.frame.origin.y * -1) - tweet.frame.height))
+        tweet.fontColor = .black
+        tweet.fontSize = 40
+        tweet.zPosition = 1
+        tweet.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: tweet.frame.width, height: tweet.frame.height))
+        tweet.physicsBody?.isDynamic = false
+        tweet.physicsBody?.affectedByGravity = false
+        tweet.physicsBody?.categoryBitMask = 1
+        tweet.physicsBody?.collisionBitMask = 1
 
-        square.run(
+        tweet.run(
             SKAction.repeatForever(
                 SKAction.sequence([
-                    SKAction.moveTo(x: -size.width, duration: 4.5),
+                    SKAction.moveTo(x: -size.width, duration: 5.5),
                     SKAction.run({
-                        square.position = CGPoint(x: self.size.width,
-                                                  y: CGFloat.random(in: self.frame.origin.y + square.frame.height..<(self.frame.origin.y * -1) - square.frame.height))
+                        tweet.position = CGPoint(x: self.size.width,
+                                                  y: CGFloat.random(in: self.frame.origin.y + tweet.frame.height..<(self.frame.origin.y * -1) - tweet.frame.height))
                     })
                 ])
             )
         )
 
-        self.addChild(square)
+        self.addChild(tweet)
+    }
+    
+    private func drawTerminate() {
+       let terminate = SKLabelNode(text: "本日はここまで")
+        terminate.position = CGPoint(x: 0.5, y: 0.5)
+        terminate.fontColor = .red
+        terminate.fontSize = 80
+        terminate.zPosition = 2
+        
+        self.addChild(terminate)
     }
 }
 
